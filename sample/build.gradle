@@ -24,6 +24,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["design"]
     implementation rootProject.ext.dependencies["constraint-layout"]
     implementation rootProject.ext.dependencies["kotlin-android"]
     //junit
