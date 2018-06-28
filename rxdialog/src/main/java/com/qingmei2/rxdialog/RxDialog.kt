@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import com.qingmei2.rxdialog.core.ServiceMethod
+import com.qingmei2.rxdialog.entity.Event
+import com.qingmei2.rxdialog.entity.EventType
 import com.qingmei2.rxdialog.util.Utils
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter

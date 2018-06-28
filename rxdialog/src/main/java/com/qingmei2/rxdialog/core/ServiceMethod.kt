@@ -1,8 +1,8 @@
 package com.qingmei2.rxdialog.core
 
 import android.content.Context
-import com.qingmei2.rxdialog.DProvider
 import com.qingmei2.rxdialog.RxDialog
+import com.qingmei2.rxdialog.entity.DProvider
 import java.lang.reflect.Method
 
 internal class ServiceMethod(private val rxDialog: RxDialog,

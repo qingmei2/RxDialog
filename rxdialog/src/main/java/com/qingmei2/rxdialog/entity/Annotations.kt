@@ -1,4 +1,4 @@
-package com.qingmei2.rxdialog
+package com.qingmei2.rxdialog.entity
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention
