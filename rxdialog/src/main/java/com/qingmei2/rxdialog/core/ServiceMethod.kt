@@ -2,41 +2,57 @@ package com.qingmei2.rxdialog.core
 
 import android.content.Context
 import com.qingmei2.rxdialog.RxDialog
-import com.qingmei2.rxdialog.entity.DProvider
+import com.qingmei2.rxdialog.entity.Dialog
+import com.qingmei2.rxdialog.entity.DialogOptions
+import java.lang.IllegalStateException
 import java.lang.reflect.Method
 
+@Suppress("UNCHECKED_CAST")
 internal class ServiceMethod(private val rxDialog: RxDialog,
                              private val method: Method,
                              private val objectsMethod: Array<Any>) {
 
-    @JvmField
-    var context: Context? = null
-    private var methodAnnotations: Array<out Annotation>? = null
+    private var dialogOptions: DialogOptions
+    private var methodAnnotations: Array<Annotation>
 
     init {
+        var dialog: Dialog? = null
         methodAnnotations = method.annotations
 
-        for (annotation in methodAnnotations!!) {
-            parseMethodAnnotation(annotation)
+        for (annotation in methodAnnotations) {
+            if (annotation is Dialog) dialog = annotation
         }
-        context = getContext()
+
+        if (dialog == null)
+            throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
+
+        dialogOptions = parseDialogOptions(dialog)
     }
 
-    private fun getContext(): Context? =
+    private fun parseDialogOptions(annotation: Dialog): DialogOptions = DialogOptions.build(
+            // get context instance from method param.
             getObjectFromMethodParam(method, Context::class.java, objectsMethod)
-
-    private fun parseMethodAnnotation(annotation: Annotation) {
-        if (annotation !is DProvider)
-            throw IllegalArgumentException("the method should has the '@DProvider' tag.")
-    }
-
-    private fun checkParametersCorrect() {
-        context ?: throw NullPointerException("Context can't be null!")
+    ) {
+        title {
+            annotation.title
+        }
+        message {
+            annotation.message
+        }
+        positiveText {
+            annotation.positiveText
+        }
+        nagativeText {
+            annotation.nagativeText
+        }
+        buttons {
+            annotation.buttons
+        }
     }
 
     private fun <T> getObjectFromMethodParam(method: Method,
                                              expectedClass: Class<T>,
-                                             objectsMethod: Array<Any>): T? {
+                                             objectsMethod: Array<Any>): T {
         var countSameObjectsType = 0
         var expectedObject: T? = null
 
@@ -48,11 +64,10 @@ internal class ServiceMethod(private val rxDialog: RxDialog,
         }
 
         if (countSameObjectsType > 1) {
-            val errorMessage = (method.name
+            throw IllegalArgumentException(method.name
                     + " requires just one instance of type.")
-            throw IllegalArgumentException(errorMessage)
         }
 
-        return expectedObject
+        return expectedObject!!
     }
 }

@@ -15,6 +15,7 @@ import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import java.util.concurrent.ConcurrentHashMap
 
+@Suppress("UNCHECKED_CAST")
 object RxDialog {
 
     private val serviceMethodCache = ConcurrentHashMap<Method, ServiceMethod>()
@@ -22,26 +23,25 @@ object RxDialog {
     fun <T> create(service: Class<T>): T {
         // check service class correct
         Utils.validateServiceInterface(service)
+
         return Proxy.newProxyInstance(
                 service.classLoader,
-                arrayOf(service),
-                { proxy, method, args ->
-                    val serviceMethod = loadServiceMethod(method, args)
-                    showObservableMessageDialog(serviceMethod.context!!,
-                            "我是标题",
-                            "我是内容",
-                            EventType.CALLBACK_TYPE_OK,
-                            EventType.CALLBACK_TYPE_CANCEL,
-                            EventType.CALLBACK_TYPE_DISMISS) as T
-                }
-        ) as T
+                arrayOf(service)
+        ) { _, method, args ->
+            showObservableMessageDialog(loadServiceMethod(method, args).context,
+                    "我是标题",
+                    "我是内容",
+                    EventType.CALLBACK_TYPE_OK,
+                    EventType.CALLBACK_TYPE_CANCEL,
+                    EventType.CALLBACK_TYPE_DISMISS)
+        } as T
     }
 
-    internal fun loadServiceMethod(method: Method,
-                                   args: Array<Any>): ServiceMethod {
-        return serviceMethodCache.get(method) ?: synchronized(serviceMethodCache) {
+    private fun loadServiceMethod(method: Method,
+                                  args: Array<Any>): ServiceMethod {
+        return serviceMethodCache[method] ?: synchronized(serviceMethodCache) {
             ServiceMethod(this, method, args).also {
-                serviceMethodCache.put(method, it)
+                serviceMethodCache[method] = it
             }
         }
     }
