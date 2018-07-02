@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">RxDialog</string>
 
-    <string name="static_dialog_button_cancel">取消</string>
-    <string name="static_dialog_button_ok">确定</string>
+    <string name="static_dialog_button_cancel">Cancel</string>
+    <string name="static_dialog_button_ok">OK</string>
 
-    <string name="static_dialog_title">普通标题</string>
-    <string name="static_dialog_message">普通内容</string>
+    <string name="static_dialog_title">I am title</string>
+    <string name="static_dialog_message">I am content</string>
 
     <string name="static_dialog_message_alert">Alert！</string>
 </resources>

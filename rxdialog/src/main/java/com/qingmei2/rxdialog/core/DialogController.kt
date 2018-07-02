@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
+import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_COLOR_RES
 import com.qingmei2.rxdialog.entity.DialogOptions
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
@@ -35,7 +36,17 @@ internal class DialogController {
                     emitter.onComplete()
                 }
             }
-            builder.show()
+            val dialog = builder.show()
+
+            if (options.negativeTextColor != DEFAULT_DIALOG_COLOR_RES) {
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+                        ?.setTextColor(options.negativeTextColor)
+            }
+
+            if (options.positiveTextColor != DEFAULT_DIALOG_COLOR_RES) {
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                        ?.setTextColor(options.positiveTextColor)
+            }
         }
     }
 

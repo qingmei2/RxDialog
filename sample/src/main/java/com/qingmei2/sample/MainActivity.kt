@@ -11,20 +11,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var holders: RxDialogHolders = RxDialog.create(RxDialogHolders::class.java)
+    private var holders: RxDialogHolders = RxDialog.create(RxDialogHolders::class.java)
 
-    val eventObserver: Consumer<Event> = object : Consumer<Event> {
-        override fun accept(event: Event) {
-            when (event.button) {
-                EventType.CALLBACK_TYPE_POSITIVE -> {
-                    toast("我点击了确认按钮")
-                }
-                EventType.CALLBACK_TYPE_NEGATIVE -> {
-                    toast("我点击了取消按钮")
-                }
-                EventType.CALLBACK_TYPE_DISMISS -> {
-                    toast("监听到Dialog.dismiss")
-                }
+    private val eventObserver: Consumer<Event> = Consumer { event ->
+        when (event.button) {
+            EventType.CALLBACK_TYPE_POSITIVE -> {
+                toast("我点击了确认按钮")
+            }
+            EventType.CALLBACK_TYPE_NEGATIVE -> {
+                toast("我点击了取消按钮")
+            }
+            EventType.CALLBACK_TYPE_DISMISS -> {
+                toast("监听到Dialog.dismiss")
             }
         }
     }

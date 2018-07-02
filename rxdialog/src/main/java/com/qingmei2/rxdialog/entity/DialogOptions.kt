@@ -1,12 +1,15 @@
 package com.qingmei2.rxdialog.entity
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 
 class DialogOptions private constructor(val context: Context,
                                         val title: String,
                                         val message: String,
                                         val positiveText: String,
+                                        val positiveTextColor: Int,
                                         val negativeText: String,
+                                        val negativeTextColor: Int,
                                         val buttons: Array<EventType>) {
 
     private constructor(builder: DialogOptions.Builder) : this(
@@ -14,7 +17,9 @@ class DialogOptions private constructor(val context: Context,
             builder.title,
             builder.message,
             builder.positiveText,
+            builder.positiveTextColor,
             builder.negativeText,
+            builder.negativeTextColor,
             builder.buttons
     )
 
@@ -37,6 +42,8 @@ class DialogOptions private constructor(val context: Context,
         lateinit var positiveText: String
         lateinit var negativeText: String
         lateinit var buttons: Array<EventType>
+        var positiveTextColor: Int = DEFAULT_DIALOG_COLOR_RES
+        var negativeTextColor: Int = DEFAULT_DIALOG_COLOR_RES
 
         fun title(init: Builder.() -> Int) = apply {
             title = init().let {
@@ -56,9 +63,21 @@ class DialogOptions private constructor(val context: Context,
             }
         }
 
-        fun nagativeText(init: Builder.() -> Int) = apply {
+        fun positiveTextColor(init: Builder.() -> Int) = apply {
+            positiveTextColor = init().let {
+                parseColorRes(it)
+            }
+        }
+
+        fun negativeText(init: Builder.() -> Int) = apply {
             negativeText = init().let {
                 parseStringRes(it)
+            }
+        }
+
+        fun negativeTextColor(init: Builder.() -> Int) = apply {
+            negativeTextColor = init().let {
+                parseColorRes(it)
             }
         }
 
@@ -66,12 +85,14 @@ class DialogOptions private constructor(val context: Context,
             buttons = init()
         }
 
-        private fun parseStringRes(stringRes: Int): String {
-            if (stringRes == DEFAULT_DIALOG_STRING_RES)
-                return ""
-            else
-                return context.getString(stringRes)
-        }
+        private fun parseStringRes(stringRes: Int): String =
+                if (stringRes == DEFAULT_DIALOG_STRING_RES)
+                    "" else context.getString(stringRes)
+
+        private fun parseColorRes(colorRes: Int): Int =
+                if (colorRes == DEFAULT_DIALOG_COLOR_RES)
+                    DEFAULT_DIALOG_COLOR_RES else ContextCompat.getColor(context, colorRes)
+
 
         fun build() = DialogOptions(this)
     }

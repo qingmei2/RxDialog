@@ -11,7 +11,9 @@ interface RxDialogHolders {
     @Dialog(title = R.string.static_dialog_title,
             message = R.string.static_dialog_message,
             positiveText = R.string.static_dialog_button_ok,
+            positiveTextColor = R.color.positive_color,
             negativeText = R.string.static_dialog_button_cancel,
+            negativeTextColor = R.color.negative_color,
             buttons = [
                 EventType.CALLBACK_TYPE_NEGATIVE,
                 EventType.CALLBACK_TYPE_POSITIVE
