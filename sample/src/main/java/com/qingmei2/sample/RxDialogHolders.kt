@@ -22,6 +22,7 @@ interface RxDialogHolders {
 
     @Dialog(message = R.string.static_dialog_message_alert,
             positiveText = R.string.static_dialog_button_ok,
+            cancelable = false,
             buttons = [
                 EventType.CALLBACK_TYPE_POSITIVE,
                 EventType.CALLBACK_TYPE_DISMISS

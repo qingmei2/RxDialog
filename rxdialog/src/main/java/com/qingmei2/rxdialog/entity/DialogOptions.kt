@@ -10,6 +10,7 @@ class DialogOptions private constructor(val context: Context,
                                         val positiveTextColor: Int,
                                         val negativeText: String,
                                         val negativeTextColor: Int,
+                                        val cancelable: Boolean,
                                         val buttons: Array<EventType>) {
 
     private constructor(builder: DialogOptions.Builder) : this(
@@ -20,6 +21,7 @@ class DialogOptions private constructor(val context: Context,
             builder.positiveTextColor,
             builder.negativeText,
             builder.negativeTextColor,
+            builder.cancelable,
             builder.buttons
     )
 
@@ -42,6 +44,7 @@ class DialogOptions private constructor(val context: Context,
         lateinit var positiveText: String
         lateinit var negativeText: String
         lateinit var buttons: Array<EventType>
+        var cancelable: Boolean = DEFAULT_DIALOG_CANCELABLE
         var positiveTextColor: Int = DEFAULT_DIALOG_COLOR_RES
         var negativeTextColor: Int = DEFAULT_DIALOG_COLOR_RES
 
@@ -83,6 +86,10 @@ class DialogOptions private constructor(val context: Context,
 
         fun buttons(init: Builder.() -> Array<EventType>) = apply {
             buttons = init()
+        }
+
+        fun cancelable(init: Builder.() -> Boolean) = apply {
+            cancelable = init()
         }
 
         private fun parseStringRes(stringRes: Int): String =

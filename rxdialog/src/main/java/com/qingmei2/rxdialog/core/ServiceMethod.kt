@@ -39,6 +39,7 @@ internal class ServiceMethod(private val rxDialog: RxDialog,
         positiveTextColor { annotation.positiveTextColor }
         negativeText { annotation.negativeText }
         negativeTextColor { annotation.negativeTextColor }
+        cancelable { annotation.cancelable }
         buttons { annotation.buttons }
     }
 

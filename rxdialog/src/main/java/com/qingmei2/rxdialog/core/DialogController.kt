@@ -25,6 +25,7 @@ internal class DialogController {
             val builder = AlertDialog.Builder(options.context)
                     .setTitle(options.title)
                     .setMessage(options.message)
+                    .setCancelable(options.cancelable)
 
             configureButton(builder, callback, options)
 
