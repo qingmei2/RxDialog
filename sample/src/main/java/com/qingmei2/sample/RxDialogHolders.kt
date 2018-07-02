@@ -27,5 +27,4 @@ interface RxDialogHolders {
                 EventType.CALLBACK_TYPE_DISMISS
             ])
     fun alertDialog(context: Context): Observable<Event>
-
 }
