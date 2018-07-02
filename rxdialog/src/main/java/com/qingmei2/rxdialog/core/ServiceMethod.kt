@@ -26,28 +26,18 @@ internal class ServiceMethod(private val rxDialog: RxDialog,
         if (dialog == null)
             throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
 
-        dialogOptions = parseDialogOptions(dialog)
+        dialogOptions = buildOptions(dialog)
     }
 
-    private fun parseDialogOptions(annotation: Dialog): DialogOptions = DialogOptions.build(
+    private fun buildOptions(annotation: Dialog): DialogOptions = DialogOptions.build(
             // get context instance from method param.
             getObjectFromMethodParam(method, Context::class.java, objectsMethod)
     ) {
-        title {
-            annotation.title
-        }
-        message {
-            annotation.message
-        }
-        positiveText {
-            annotation.positiveText
-        }
-        nagativeText {
-            annotation.nagativeText
-        }
-        buttons {
-            annotation.buttons
-        }
+        title { annotation.title }
+        message { annotation.message }
+        positiveText { annotation.positiveText }
+        nagativeText { annotation.negativeText }
+        buttons { annotation.buttons }
     }
 
     private fun <T> getObjectFromMethodParam(method: Method,

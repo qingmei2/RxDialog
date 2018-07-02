@@ -14,7 +14,7 @@ def rxschedulers_version = "0.1.1"
 project.ext {
     android = [
             compileSdkVersion   : 27,
-            minSdkVersion       : 17,
+            minSdkVersion       : 14,
             targetSdkVersion    : 27,
             versionCode         : 1,
             versionName         : "0.1.0"
