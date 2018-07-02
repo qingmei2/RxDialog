@@ -12,7 +12,7 @@ internal class ServiceMethod(private val rxDialog: RxDialog,
                              private val method: Method,
                              private val objectsMethod: Array<Any>) {
 
-    private var dialogOptions: DialogOptions
+    var dialogOptions: DialogOptions
     private var methodAnnotations: Array<Annotation>
 
     init {

@@ -2,10 +2,10 @@ package com.qingmei2.rxdialog
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import com.qingmei2.rxdialog.core.ServiceMethod
+import com.qingmei2.rxdialog.entity.DialogOptions
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
 import com.qingmei2.rxdialog.util.Utils
@@ -28,12 +28,9 @@ object RxDialog {
                 service.classLoader,
                 arrayOf(service)
         ) { _, method, args ->
-            showObservableMessageDialog(loadServiceMethod(method, args).context,
-                    "我是标题",
-                    "我是内容",
-                    EventType.CALLBACK_TYPE_OK,
-                    EventType.CALLBACK_TYPE_CANCEL,
-                    EventType.CALLBACK_TYPE_DISMISS)
+            showObservableMessageDialog(
+                    loadServiceMethod(method, args).dialogOptions
+            )
         } as T
     }
 
@@ -47,24 +44,21 @@ object RxDialog {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private fun showObservableMessageDialog(context: Context,
-                                            title: CharSequence = "",
-                                            message: CharSequence = "",
-                                            vararg buttons: EventType = arrayOf()): Any {
-        val sendDismissEvent = buttons.contains(EventType.CALLBACK_TYPE_DISMISS)
+    private fun showObservableMessageDialog(options: DialogOptions): Any {
+        val sendDismissEvent = options.buttons.contains(EventType.CALLBACK_TYPE_DISMISS)
 
         return Observable.create { emitter: ObservableEmitter<Event> ->
             val callback: (event: Event) -> Unit = { event: Event ->
                 emitter.onNext(event)
             }
 
-            val builder = AlertDialog.Builder(context)
-                    .setTitle(title)
-                    .setMessage(message)
+            val builder = AlertDialog.Builder(options.context)
+                    .setTitle(options.title)
+                    .setMessage(options.message)
 
             configureButton(builder,
                     callback,
-                    buttons)
+                    options.buttons)
 
             builder.setOnDismissListener { dialog: DialogInterface ->
                 if (sendDismissEvent)

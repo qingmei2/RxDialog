@@ -67,8 +67,10 @@ class DialogOptions private constructor(val context: Context,
         }
 
         private fun parseStringRes(stringRes: Int): String {
-            if(stringRes == DEFAULT_DIALOG_STRING_RES)
-            context.getString(stringRes)
+            if (stringRes == DEFAULT_DIALOG_STRING_RES)
+                return ""
+            else
+                return context.getString(stringRes)
         }
 
         fun build() = DialogOptions(this)
