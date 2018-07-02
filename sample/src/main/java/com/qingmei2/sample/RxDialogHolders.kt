@@ -12,7 +12,18 @@ interface RxDialogHolders {
             message = R.string.static_dialog_message,
             positiveText = R.string.static_dialog_button_ok,
             negativeText = R.string.static_dialog_button_cancel,
-            buttons = [(EventType.CALLBACK_TYPE_NEGATIVE), (EventType.CALLBACK_TYPE_POSITIVE)])
+            buttons = [
+                EventType.CALLBACK_TYPE_NEGATIVE,
+                EventType.CALLBACK_TYPE_POSITIVE
+            ])
     fun simpleDialog(context: Context): Observable<Event>
+
+    @Dialog(message = R.string.static_dialog_message_alert,
+            positiveText = R.string.static_dialog_button_ok,
+            buttons = [
+                EventType.CALLBACK_TYPE_POSITIVE,
+                EventType.CALLBACK_TYPE_DISMISS
+            ])
+    fun alertDialog(context: Context): Observable<Event>
 
 }

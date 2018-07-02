@@ -6,7 +6,7 @@ class DialogOptions private constructor(val context: Context,
                                         val title: String,
                                         val message: String,
                                         val positiveText: String,
-                                        val nagativeText: String,
+                                        val negativeText: String,
                                         val buttons: Array<EventType>) {
 
     private constructor(builder: DialogOptions.Builder) : this(
@@ -14,7 +14,7 @@ class DialogOptions private constructor(val context: Context,
             builder.title,
             builder.message,
             builder.positiveText,
-            builder.nagativeText,
+            builder.negativeText,
             builder.buttons
     )
 
@@ -35,7 +35,7 @@ class DialogOptions private constructor(val context: Context,
         lateinit var title: String
         lateinit var message: String
         lateinit var positiveText: String
-        lateinit var nagativeText: String
+        lateinit var negativeText: String
         lateinit var buttons: Array<EventType>
 
         fun title(init: Builder.() -> Int) = apply {
@@ -57,7 +57,7 @@ class DialogOptions private constructor(val context: Context,
         }
 
         fun nagativeText(init: Builder.() -> Int) = apply {
-            nagativeText = init().let {
+            negativeText = init().let {
                 parseStringRes(it)
             }
         }

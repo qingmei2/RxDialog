@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
-import com.qingmei2.rxdialog.R
 import com.qingmei2.rxdialog.entity.DialogOptions
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
@@ -26,7 +25,7 @@ internal class DialogController {
                     .setTitle(options.title)
                     .setMessage(options.message)
 
-            configureButton(builder, callback, options.buttons)
+            configureButton(builder, callback, options)
 
             // If the device sdk version >= 17, set the dismiss listener.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -42,22 +41,22 @@ internal class DialogController {
 
     private fun configureButton(builder: AlertDialog.Builder,
                                 callback: (event: Event) -> Unit,
-                                buttons: Array<out EventType>) {
-        if (buttons.isEmpty()) {
+                                options: DialogOptions) {
+        if (options.buttons.isEmpty()) {
             throw NullPointerException("the buttons value in the '@Dialog' annotation can't be empty!")
         }
 
-        for (button in buttons) {
+        for (button in options.buttons) {
             when (button) {
                 EventType.CALLBACK_TYPE_NEGATIVE ->
                     builder.setNegativeButton(
-                            R.string.dialog_button_cancel
+                            options.negativeText
                     ) { dialog: DialogInterface, _: Int ->
                         callback(Event(dialog, EventType.CALLBACK_TYPE_NEGATIVE))
                     }
                 EventType.CALLBACK_TYPE_POSITIVE ->
                     builder.setPositiveButton(
-                            R.string.dialog_button_ok
+                            options.positiveText
                     ) { dialog: DialogInterface, _: Int ->
                         callback(Event(dialog, EventType.CALLBACK_TYPE_POSITIVE))
                         dialog.dismiss()
