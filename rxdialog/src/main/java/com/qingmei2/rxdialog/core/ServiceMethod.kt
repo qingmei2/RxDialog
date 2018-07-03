@@ -1,7 +1,6 @@
 package com.qingmei2.rxdialog.core
 
 import android.content.Context
-import android.util.Log
 import com.qingmei2.rxdialog.core.options.DialogOption
 import com.qingmei2.rxdialog.core.options.SimpleDialogOption
 import com.qingmei2.rxdialog.entity.Dialog
@@ -12,40 +11,38 @@ internal class ServiceMethod(private val method: Method,
                              private val objectsMethod: Array<Any>)
     : DialogOption.Factory {
 
-    private lateinit var build: () -> DialogOption
-
-    init {
-
-        val methodAnnotations: Array<Annotation> = method.annotations
-
-        Log.d("tag", "methodAnnotations.size = ${methodAnnotations.size}")
-        for (annotation in methodAnnotations) {
-            if (annotation is Dialog) {
-                build = {
-                    SimpleDialogOption.build(
-                            // get context object from method param.
-                            getObjectFromMethodParam(method, Context::class.java, objectsMethod))
-                    {
-                        title { annotation.title }
-                        message { annotation.message }
-                        positiveText { annotation.positiveText }
-                        positiveTextColor { annotation.positiveTextColor }
-                        negativeText { annotation.negativeText }
-                        negativeTextColor { annotation.negativeTextColor }
-                        cancelable { annotation.cancelable }
-                        buttons { annotation.buttons }
-                    }
-                }
-            }
-        }
-//        build ?: throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
+    private val methodAnnotation: Annotation by lazy {
+        checkMethodAnnotations()
     }
 
-    override fun buildOption(): DialogOption = build()
+    override fun buildOption(): DialogOption {
+        when (methodAnnotation) {
+            is Dialog -> {
+                val dialog = methodAnnotation as Dialog
+                return SimpleDialogOption.build(
+                        // get context object from method param.
+                        getObjectFromMethodParam(method, Context::class.java, objectsMethod),
+                        dialog)
+            }
+            else -> throw IllegalArgumentException(
+                    "You should add the correct annotation on the top of interface method!")
 
-    private fun <T> getObjectFromMethodParam(method: Method,
-                                             expectedClass: Class<T>,
-                                             objectsMethod: Array<Any>): T {
+        }
+    }
+
+    private fun checkMethodAnnotations(): Annotation {
+        val methodAnnotations: Array<Annotation> = method.annotations
+
+        if (methodAnnotations.size != 1)
+            throw IllegalArgumentException(
+                    "You can only add one annotation on the top of interface method.")
+
+        return methodAnnotations[0]
+    }
+
+    fun <T> getObjectFromMethodParam(method: Method,
+                                     expectedClass: Class<T>,
+                                     objectsMethod: Array<Any>): T {
         var countSameObjectsType = 0
         var expectedObject: T? = null
 

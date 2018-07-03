@@ -15,3 +15,4 @@ annotation class Dialog(val title: Int = DEFAULT_DIALOG_STRING_RES,
 const val DEFAULT_DIALOG_STRING_RES = -1
 const val DEFAULT_DIALOG_COLOR_RES = -2
 const val DEFAULT_DIALOG_CANCELABLE = true
+const val DEFAULT_DIALOG_STRING = ""
