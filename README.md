@@ -5,7 +5,9 @@ An easy-to-use Dialog management tool.
 
 ## Usage
 
-This tool is still in development and we don't provide its dependencies by the Gradle compile.
+This tool is still in development and we don't provide its dependencies by the Gradle compile.  
+
+The programming language used in the code below is Kotlin, the Java usage see **[here](https://github.com/qingmei2/RxDialog/blob/master/sample/src/main/java/com/qingmei2/sample/JavaActivity.java)**.
 
 ### 1.Create Interface and configuration it.
 
@@ -58,6 +60,10 @@ button.setOnClickListener {
 }
 ```
 
+## Another author's libraries using RxJava:
+
+* **[RxImagePicker](https://github.com/qingmei2/RxImagePicker)**:  The library which choosing pictures from camera or gallery in Android.
+* **[RxSchedulers](https://github.com/qingmei2/RxSchedulers)**: The schedulers tools for RxJava2 in Android.   
 
 License
 -------

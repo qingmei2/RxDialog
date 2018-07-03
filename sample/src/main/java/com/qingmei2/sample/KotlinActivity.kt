@@ -1,17 +1,15 @@
 package com.qingmei2.sample
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.qingmei2.rxdialog.RxDialog
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
 import io.reactivex.functions.Consumer
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_kt.*
 
-class MainActivity : AppCompatActivity() {
-
-    private var holders: RxDialogHolders = RxDialog.create(RxDialogHolders::class.java)
+class KotlinActivity : AppCompatActivity() {
 
     private val eventObserver: Consumer<Event> = Consumer { event ->
         when (event.button) {
@@ -29,8 +27,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_kt)
 
+        val sampleApplication = application as SampleApplication
+        val holders = sampleApplication.dialogHolders
+
+        btnJava.setOnClickListener {
+            startActivity(Intent(this, JavaActivity::class.java))
+        }
         btnSimple.setOnClickListener {
             holders.simpleDialog(this)
                     .subscribe(eventObserver)
