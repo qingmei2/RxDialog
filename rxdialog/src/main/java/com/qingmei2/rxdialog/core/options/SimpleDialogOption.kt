@@ -1,15 +1,15 @@
-package com.qingmei2.rxdialog.entity.options
+package com.qingmei2.rxdialog.core.options
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import com.qingmei2.rxdialog.core.factory.DialogFactory
+import com.qingmei2.rxdialog.core.factory.SimpleDialogFactory
 import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_CANCELABLE
 import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_COLOR_RES
 import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_STRING_RES
 import com.qingmei2.rxdialog.entity.EventType
-import com.qingmei2.rxdialog.entity.factory.RxDialogFactory
-import com.qingmei2.rxdialog.entity.factory.SimpleDialogFactory
 
-class SimpleDialogOption private constructor(val context: Context,
+internal class SimpleDialogOption private constructor(val context: Context,
                                              val title: String,
                                              val message: String,
                                              val positiveText: String,
@@ -18,7 +18,7 @@ class SimpleDialogOption private constructor(val context: Context,
                                              val negativeTextColor: Int,
                                              val cancelable: Boolean,
                                              val buttons: Array<EventType>)
-    : RxDialogOption {
+    : DialogOption {
 
     private constructor(builder: Builder) : this(
             builder.context,
@@ -32,7 +32,7 @@ class SimpleDialogOption private constructor(val context: Context,
             builder.buttons
     )
 
-    override fun seekDialogFactory(): RxDialogFactory = SimpleDialogFactory(this)
+    override fun seekDialogFactory(): DialogFactory = SimpleDialogFactory(this)
 
     companion object {
 

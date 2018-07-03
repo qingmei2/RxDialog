@@ -2,17 +2,17 @@ package com.qingmei2.rxdialog.core
 
 import android.content.Context
 import android.util.Log
+import com.qingmei2.rxdialog.core.options.DialogOption
+import com.qingmei2.rxdialog.core.options.SimpleDialogOption
 import com.qingmei2.rxdialog.entity.Dialog
-import com.qingmei2.rxdialog.entity.options.RxDialogOption
-import com.qingmei2.rxdialog.entity.options.SimpleDialogOption
 import java.lang.reflect.Method
 
 @Suppress("UNCHECKED_CAST")
 internal class ServiceMethod(private val method: Method,
                              private val objectsMethod: Array<Any>)
-    : RxDialogOption.Factory {
+    : DialogOption.Factory {
 
-    private lateinit var build: () -> RxDialogOption
+    private lateinit var build: () -> DialogOption
 
     init {
 
@@ -23,7 +23,7 @@ internal class ServiceMethod(private val method: Method,
             if (annotation is Dialog) {
                 build = {
                     SimpleDialogOption.build(
-                            // get context obs from method param.
+                            // get context object from method param.
                             getObjectFromMethodParam(method, Context::class.java, objectsMethod))
                     {
                         title { annotation.title }
@@ -41,7 +41,7 @@ internal class ServiceMethod(private val method: Method,
 //        build ?: throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
     }
 
-    override fun buildOption(): RxDialogOption = build()
+    override fun buildOption(): DialogOption = build()
 
     private fun <T> getObjectFromMethodParam(method: Method,
                                              expectedClass: Class<T>,
@@ -58,7 +58,7 @@ internal class ServiceMethod(private val method: Method,
 
         if (countSameObjectsType > 1) {
             throw IllegalArgumentException(method.name
-                    + " requires just one obs of type.")
+                    + " requires just one object of type.")
         }
 
         return expectedObject!!

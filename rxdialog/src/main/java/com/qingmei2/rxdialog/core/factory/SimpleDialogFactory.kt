@@ -1,17 +1,17 @@
-package com.qingmei2.rxdialog.entity.factory
+package com.qingmei2.rxdialog.core.factory
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
+import com.qingmei2.rxdialog.core.options.SimpleDialogOption
 import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_COLOR_RES
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
-import com.qingmei2.rxdialog.entity.options.SimpleDialogOption
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class SimpleDialogFactory(private val options: SimpleDialogOption) : RxDialogFactory {
+internal class SimpleDialogFactory(private val options: SimpleDialogOption) : DialogFactory {
 
     override fun observable(): Observable<Event> =
             initSimpleObservableDialog(options = options)

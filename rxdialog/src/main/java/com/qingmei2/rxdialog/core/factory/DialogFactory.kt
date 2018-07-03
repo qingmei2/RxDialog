@@ -1,9 +1,9 @@
-package com.qingmei2.rxdialog.entity.factory
+package com.qingmei2.rxdialog.core.factory
 
 import com.qingmei2.rxdialog.entity.Event
 import io.reactivex.Observable
 
-interface RxDialogFactory {
+interface DialogFactory {
 
     fun observable(): Observable<Event>
 }
