@@ -1,6 +1,5 @@
 package com.qingmei2.rxdialog
 
-import com.qingmei2.rxdialog.core.DialogController
 import com.qingmei2.rxdialog.core.ServiceMethod
 import com.qingmei2.rxdialog.util.Utils
 import java.lang.reflect.Method
@@ -11,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap
 object RxDialog {
 
     private val serviceMethodCache = ConcurrentHashMap<Method, ServiceMethod>()
-    private val controller = DialogController()
 
     fun <T> create(service: Class<T>): T {
         // check service class correct
@@ -21,16 +19,17 @@ object RxDialog {
                 service.classLoader,
                 arrayOf(service)
         ) { _, method, args ->
-            loadServiceMethod(method, args).let {
-                controller.showObservableMessageDialog(it.dialogOptions)
-            }
+            loadServiceMethod(method, args)
+                    .buildOption()
+                    .seekDialogFactory()
+                    .observable()
         } as T
     }
 
     private fun loadServiceMethod(method: Method,
                                   args: Array<Any>): ServiceMethod {
         return serviceMethodCache[method] ?: synchronized(serviceMethodCache) {
-            ServiceMethod(this, method, args).also {
+            ServiceMethod(method, args).also {
                 serviceMethodCache[method] = it
             }
         }

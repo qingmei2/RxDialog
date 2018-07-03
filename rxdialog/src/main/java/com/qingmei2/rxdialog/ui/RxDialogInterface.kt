@@ -1,9 +1,9 @@
 package com.qingmei2.rxdialog.ui
 
-import com.qingmei2.rxdialog.entity.DialogOptions
+import com.qingmei2.rxdialog.entity.options.SimpleDialogOption
 
 interface RxDialogInterface {
 
-    fun seekDialogOptions(): DialogOptions
+    fun seekDialogOptions(): SimpleDialogOption
 
 }

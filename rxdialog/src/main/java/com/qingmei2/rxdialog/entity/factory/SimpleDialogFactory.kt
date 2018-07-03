@@ -1,20 +1,23 @@
-package com.qingmei2.rxdialog.core
+package com.qingmei2.rxdialog.entity.factory
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
 import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_COLOR_RES
-import com.qingmei2.rxdialog.entity.DialogOptions
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
+import com.qingmei2.rxdialog.entity.options.SimpleDialogOption
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-internal class DialogController {
+class SimpleDialogFactory(private val options: SimpleDialogOption) : RxDialogFactory {
+
+    override fun observable(): Observable<Event> =
+            initSimpleObservableDialog(options = options)
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun showObservableMessageDialog(options: DialogOptions): Any {
+    private fun initSimpleObservableDialog(options: SimpleDialogOption): Observable<Event> {
         val sendDismissEvent = options.buttons.contains(EventType.CALLBACK_TYPE_DISMISS)
 
         return Observable.create { emitter: ObservableEmitter<Event> ->
@@ -53,7 +56,7 @@ internal class DialogController {
 
     private fun configureButton(builder: AlertDialog.Builder,
                                 callback: (event: Event) -> Unit,
-                                options: DialogOptions) {
+                                options: SimpleDialogOption) {
         if (options.buttons.isEmpty()) {
             throw NullPointerException("the buttons value in the '@Dialog' annotation can't be empty!")
         }

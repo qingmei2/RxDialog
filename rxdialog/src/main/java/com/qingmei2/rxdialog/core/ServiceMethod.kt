@@ -1,47 +1,47 @@
 package com.qingmei2.rxdialog.core
 
 import android.content.Context
-import com.qingmei2.rxdialog.RxDialog
+import android.util.Log
 import com.qingmei2.rxdialog.entity.Dialog
-import com.qingmei2.rxdialog.entity.DialogOptions
-import java.lang.IllegalStateException
+import com.qingmei2.rxdialog.entity.options.RxDialogOption
+import com.qingmei2.rxdialog.entity.options.SimpleDialogOption
 import java.lang.reflect.Method
 
 @Suppress("UNCHECKED_CAST")
-internal class ServiceMethod(private val rxDialog: RxDialog,
-                             private val method: Method,
-                             private val objectsMethod: Array<Any>) {
+internal class ServiceMethod(private val method: Method,
+                             private val objectsMethod: Array<Any>)
+    : RxDialogOption.Factory {
 
-    var dialogOptions: DialogOptions
-    private var methodAnnotations: Array<Annotation>
+    private lateinit var build: () -> RxDialogOption
 
     init {
-        var dialog: Dialog? = null
-        methodAnnotations = method.annotations
 
+        val methodAnnotations: Array<Annotation> = method.annotations
+
+        Log.d("tag", "methodAnnotations.size = ${methodAnnotations.size}")
         for (annotation in methodAnnotations) {
-            if (annotation is Dialog) dialog = annotation
+            if (annotation is Dialog) {
+                build = {
+                    SimpleDialogOption.build(
+                            // get context obs from method param.
+                            getObjectFromMethodParam(method, Context::class.java, objectsMethod))
+                    {
+                        title { annotation.title }
+                        message { annotation.message }
+                        positiveText { annotation.positiveText }
+                        positiveTextColor { annotation.positiveTextColor }
+                        negativeText { annotation.negativeText }
+                        negativeTextColor { annotation.negativeTextColor }
+                        cancelable { annotation.cancelable }
+                        buttons { annotation.buttons }
+                    }
+                }
+            }
         }
-
-        if (dialog == null)
-            throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
-
-        dialogOptions = buildOptions(dialog)
+//        build ?: throw IllegalStateException("the function should be provided the '@Dialog' annotation only.")
     }
 
-    private fun buildOptions(annotation: Dialog): DialogOptions = DialogOptions.build(
-            // get context instance from method param.
-            getObjectFromMethodParam(method, Context::class.java, objectsMethod)
-    ) {
-        title { annotation.title }
-        message { annotation.message }
-        positiveText { annotation.positiveText }
-        positiveTextColor { annotation.positiveTextColor }
-        negativeText { annotation.negativeText }
-        negativeTextColor { annotation.negativeTextColor }
-        cancelable { annotation.cancelable }
-        buttons { annotation.buttons }
-    }
+    override fun buildOption(): RxDialogOption = build()
 
     private fun <T> getObjectFromMethodParam(method: Method,
                                              expectedClass: Class<T>,
@@ -58,7 +58,7 @@ internal class ServiceMethod(private val rxDialog: RxDialog,
 
         if (countSameObjectsType > 1) {
             throw IllegalArgumentException(method.name
-                    + " requires just one instance of type.")
+                    + " requires just one obs of type.")
         }
 
         return expectedObject!!

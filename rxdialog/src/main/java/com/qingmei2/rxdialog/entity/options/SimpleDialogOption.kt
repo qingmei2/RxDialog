@@ -1,19 +1,26 @@
-package com.qingmei2.rxdialog.entity
+package com.qingmei2.rxdialog.entity.options
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_CANCELABLE
+import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_COLOR_RES
+import com.qingmei2.rxdialog.entity.DEFAULT_DIALOG_STRING_RES
+import com.qingmei2.rxdialog.entity.EventType
+import com.qingmei2.rxdialog.entity.factory.RxDialogFactory
+import com.qingmei2.rxdialog.entity.factory.SimpleDialogFactory
 
-class DialogOptions private constructor(val context: Context,
-                                        val title: String,
-                                        val message: String,
-                                        val positiveText: String,
-                                        val positiveTextColor: Int,
-                                        val negativeText: String,
-                                        val negativeTextColor: Int,
-                                        val cancelable: Boolean,
-                                        val buttons: Array<EventType>) {
+class SimpleDialogOption private constructor(val context: Context,
+                                             val title: String,
+                                             val message: String,
+                                             val positiveText: String,
+                                             val positiveTextColor: Int,
+                                             val negativeText: String,
+                                             val negativeTextColor: Int,
+                                             val cancelable: Boolean,
+                                             val buttons: Array<EventType>)
+    : RxDialogOption {
 
-    private constructor(builder: DialogOptions.Builder) : this(
+    private constructor(builder: Builder) : this(
             builder.context,
             builder.title,
             builder.message,
@@ -24,6 +31,8 @@ class DialogOptions private constructor(val context: Context,
             builder.cancelable,
             builder.buttons
     )
+
+    override fun seekDialogFactory(): RxDialogFactory = SimpleDialogFactory(this)
 
     companion object {
 
@@ -101,7 +110,7 @@ class DialogOptions private constructor(val context: Context,
                     DEFAULT_DIALOG_COLOR_RES else ContextCompat.getColor(context, colorRes)
 
 
-        fun build() = DialogOptions(this)
+        fun build() = SimpleDialogOption(this)
     }
 }
 
