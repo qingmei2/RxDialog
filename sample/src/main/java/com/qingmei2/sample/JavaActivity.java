@@ -6,7 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.qingmei2.rxdialog.RxDialog;
 import com.qingmei2.rxdialog.entity.Event;
+import com.qingmei2.rxdialog.entity.EventType;
 
 import io.reactivex.functions.Consumer;
 
@@ -34,17 +36,24 @@ public class JavaActivity extends AppCompatActivity {
         FloatingActionButton fabAlert = findViewById(R.id.btnAlert);
         FloatingActionButton fabSimple = findViewById(R.id.btnSimple);
 
-        SampleApplication application = (SampleApplication) getApplication();
-//        RxDialogHolders holders = application.getDialogHolders();
-//
-//        fabSimple.setOnClickListener(v ->
-//                holders.simpleDialog(this)
-//                        .subscribe(consumer)
-//        );
-//        fabAlert.setOnClickListener(v ->
-//                holders.alertDialog(this)
-//                        .subscribe(consumer)
-//        );
+        fabSimple.setOnClickListener(v ->
+                RxDialog
+                        .Companion
+                        .build(this, builder -> {
+                            builder.withTitle(__ -> R.string.static_dialog_title)
+                                    .withMessage(__ -> R.string.static_dialog_message)
+                                    .withButtons(__ -> new EventType[]
+                                            {EventType.CALLBACK_TYPE_DISMISS,
+                                                    EventType.CALLBACK_TYPE_NEGATIVE,
+                                                    EventType.CALLBACK_TYPE_POSITIVE
+                                            })
+                                    .withNegativeText(__ -> R.string.static_dialog_button_cancel)
+                                    .withPositiveText(__ -> R.string.static_dialog_button_ok);
+                            return null;
+                        })
+                        .observable()
+                        .subscribe(consumer)
+        );
     }
 
     private void toast(String text) {

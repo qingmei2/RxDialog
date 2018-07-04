@@ -15,13 +15,13 @@ class KotlinActivity : AppCompatActivity() {
     private val eventObserver: Consumer<Event> = Consumer { event ->
         when (event.button) {
             EventType.CALLBACK_TYPE_POSITIVE -> {
-                toast("我点击了确认按钮")
+                toast("click the OK")
             }
             EventType.CALLBACK_TYPE_NEGATIVE -> {
-                toast("我点击了取消按钮")
+                toast("click the CANCEL")
             }
             EventType.CALLBACK_TYPE_DISMISS -> {
-                toast("监听到Dialog.dismiss")
+                toast("dismiss...")
             }
         }
     }

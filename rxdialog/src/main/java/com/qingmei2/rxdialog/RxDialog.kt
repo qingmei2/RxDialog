@@ -49,6 +49,37 @@ class RxDialog private constructor(val context: Context,
         var negativeText: String = DEFAULT_DIALOG_STRING
         var buttons: Array<EventType> = arrayOf()
 
+        fun withTitle(init: Builder.() -> Int) = apply {
+            title = init().let {
+                parseStringRes(it)
+            }
+        }
+
+        fun withMessage(init: Builder.() -> Int) = apply {
+            message = init().let {
+                parseStringRes(it)
+            }
+        }
+
+        fun withPositiveText(init: Builder.() -> Int) = apply {
+            positiveText = init().let {
+                parseStringRes(it)
+            }
+        }
+
+        fun withNegativeText(init: Builder.() -> Int) = apply {
+            negativeText = init().let {
+                parseStringRes(it)
+            }
+        }
+
+        fun withButtons(init: Builder.() -> Array<EventType>) = apply {
+            buttons = init()
+        }
+
+        private fun parseStringRes(stringRes: Int): String {
+            return context.getString(stringRes)
+        }
 
         fun build() = RxDialog(this)
     }
