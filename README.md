@@ -7,56 +7,36 @@ An easy-to-use Dialog management tool.
 
 This tool is still in development and we don't provide its dependencies by the Gradle compile.  
 
-The programming language used in the code below is Kotlin, the Java usage see **[here](https://github.com/qingmei2/RxDialog/blob/master/sample/src/main/java/com/qingmei2/sample/JavaActivity.java)**.
-
-### 1.Create Interface and configuration it.
-
-```Kotlin
-interface RxDialogHolders {
-
-    @Dialog(title = R.string.static_dialog_title,
-            message = R.string.static_dialog_message,
-            positiveText = R.string.static_dialog_button_ok,
-            positiveTextColor = R.color.positive_color,
-            negativeText = R.string.static_dialog_button_cancel,
-            negativeTextColor = R.color.negative_color,
-            buttons = [
-                EventType.CALLBACK_TYPE_NEGATIVE,
-                EventType.CALLBACK_TYPE_POSITIVE,
-                EventType.CALLBACK_TYPE_DISMISS
-            ])
-    fun simpleDialog(context: Context): Observable<Event>
-}
-```
-
-it would be like this :
-
-![](https://github.com/qingmei2/RxDialog/blob/master/screenshots/ide_preview.png)
-
-### 2.Init your DialogHolders(as singleton?).
-
-```Kotlin
-private var holders: RxDialogHolders = RxDialog.create(RxDialogHolders::class.java)
-```
-
-### 3.Show your dialog at somewhere.
+Show your dialog at somewhere:
 
 ```Kotlin
 button.setOnClickListener {
-      holders.alertDialog(this)
-              .subscribe { event ->
-                  when (event.button) {
-                      EventType.CALLBACK_TYPE_POSITIVE -> {
-                          toast("I Click the OK")
-                      }
-                      EventType.CALLBACK_TYPE_NEGATIVE -> {
-                          toast("I Click the Cancel")
-                      }
-                      EventType.CALLBACK_TYPE_DISMISS -> {
-                          toast("dialog is dismiss")
-                      }
-                  }
-              }
+            RxDialog
+                    .build(this) {
+                        title = "I am title"
+                        message = "I am message"
+                        buttons = arrayOf(
+                                EventType.CALLBACK_TYPE_POSITIVE,
+                                EventType.CALLBACK_TYPE_NEGATIVE,
+                                EventType.CALLBACK_TYPE_DISMISS
+                        )
+                        positiveText = getString(R.string.static_dialog_button_ok)
+                        negativeText = getString(R.string.static_dialog_button_cancel)
+                    }
+                    .observable()
+                    .subscribe{ event ->
+                          when (event.button) {
+                              EventType.CALLBACK_TYPE_POSITIVE -> {
+                                  toast("我点击了确认按钮")
+                              }
+                              EventType.CALLBACK_TYPE_NEGATIVE -> {
+                                  toast("我点击了取消按钮")
+                              }
+                              EventType.CALLBACK_TYPE_DISMISS -> {
+                                  toast("监听到Dialog.dismiss")
+                              }
+                          }
+                    }
 }
 ```
 
