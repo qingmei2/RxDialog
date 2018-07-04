@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.qingmei2.rxdialog.RxDialog
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
 import io.reactivex.functions.Consumer
@@ -29,18 +30,23 @@ class KotlinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kt)
 
-        val sampleApplication = application as SampleApplication
-        val holders = sampleApplication.dialogHolders
-
         btnJava.setOnClickListener {
             startActivity(Intent(this, JavaActivity::class.java))
         }
         btnSimple.setOnClickListener {
-            holders.simpleDialog(this)
-                    .subscribe(eventObserver)
-        }
-        btnAlert.setOnClickListener {
-            holders.alertDialog(this)
+            RxDialog
+                    .build(this) {
+                        title = "I am title"
+                        message = "I am message"
+                        buttons = arrayOf(
+                                EventType.CALLBACK_TYPE_POSITIVE,
+                                EventType.CALLBACK_TYPE_NEGATIVE,
+                                EventType.CALLBACK_TYPE_DISMISS
+                        )
+                        positiveText = getString(R.string.static_dialog_button_ok)
+                        negativeText = getString(R.string.static_dialog_button_cancel)
+                    }
+                    .observable()
                     .subscribe(eventObserver)
         }
     }

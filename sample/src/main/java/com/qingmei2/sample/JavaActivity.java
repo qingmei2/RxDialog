@@ -35,16 +35,16 @@ public class JavaActivity extends AppCompatActivity {
         FloatingActionButton fabSimple = findViewById(R.id.btnSimple);
 
         SampleApplication application = (SampleApplication) getApplication();
-        RxDialogHolders holders = application.getDialogHolders();
-
-        fabSimple.setOnClickListener(v ->
-                holders.simpleDialog(this)
-                        .subscribe(consumer)
-        );
-        fabAlert.setOnClickListener(v ->
-                holders.alertDialog(this)
-                        .subscribe(consumer)
-        );
+//        RxDialogHolders holders = application.getDialogHolders();
+//
+//        fabSimple.setOnClickListener(v ->
+//                holders.simpleDialog(this)
+//                        .subscribe(consumer)
+//        );
+//        fabAlert.setOnClickListener(v ->
+//                holders.alertDialog(this)
+//                        .subscribe(consumer)
+//        );
     }
 
     private void toast(String text) {
