@@ -40,15 +40,15 @@ public class JavaActivity extends AppCompatActivity {
                 RxDialog
                         .Companion
                         .build(this, builder -> {
-                            builder.withTitle(__ -> R.string.static_dialog_title)
-                                    .withMessage(__ -> R.string.static_dialog_message)
-                                    .withButtons(__ -> new EventType[]
+                            builder.withTitle(R.string.static_dialog_title)
+                                    .withMessage(R.string.static_dialog_message)
+                                    .withButtons(new EventType[]
                                             {EventType.CALLBACK_TYPE_DISMISS,
                                                     EventType.CALLBACK_TYPE_NEGATIVE,
                                                     EventType.CALLBACK_TYPE_POSITIVE
                                             })
-                                    .withNegativeText(__ -> R.string.static_dialog_button_cancel)
-                                    .withPositiveText(__ -> R.string.static_dialog_button_ok);
+                                    .withNegativeText(R.string.static_dialog_button_cancel)
+                                    .withPositiveText(R.string.static_dialog_button_ok);
                             return null;
                         })
                         .observable()

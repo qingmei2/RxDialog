@@ -49,32 +49,24 @@ class RxDialog private constructor(val context: Context,
         var negativeText: String = DEFAULT_DIALOG_STRING
         var buttons: Array<EventType> = arrayOf()
 
-        fun withTitle(init: Builder.() -> Int) = apply {
-            title = init().let {
-                parseStringRes(it)
-            }
+        fun withTitle(stringRes: Int) = apply {
+            title = parseStringRes(stringRes)
         }
 
-        fun withMessage(init: Builder.() -> Int) = apply {
-            message = init().let {
-                parseStringRes(it)
-            }
+        fun withMessage(stringRes: Int) = apply {
+            message = parseStringRes(stringRes)
         }
 
-        fun withPositiveText(init: Builder.() -> Int) = apply {
-            positiveText = init().let {
-                parseStringRes(it)
-            }
+        fun withPositiveText(stringRes: Int) = apply {
+            positiveText = parseStringRes(stringRes)
         }
 
-        fun withNegativeText(init: Builder.() -> Int) = apply {
-            negativeText = init().let {
-                parseStringRes(it)
-            }
+        fun withNegativeText(stringRes: Int) = apply {
+            negativeText = parseStringRes(stringRes)
         }
 
-        fun withButtons(init: Builder.() -> Array<EventType>) = apply {
-            buttons = init()
+        fun withButtons(buttons: Array<EventType>) = apply {
+            this.buttons = buttons
         }
 
         private fun parseStringRes(stringRes: Int): String {
