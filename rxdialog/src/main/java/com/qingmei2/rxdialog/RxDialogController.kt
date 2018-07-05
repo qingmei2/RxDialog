@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Build
+import com.qingmei2.rxdialog.RxDialog.Companion.DEFAULT_DIALOG_COLOR_RES
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
 import io.reactivex.Observable
@@ -23,6 +24,7 @@ object RxDialogController {
             val builder = AlertDialog.Builder(dialog.context)
                     .setTitle(dialog.title)
                     .setMessage(dialog.message)
+                    .setCancelable(dialog.cancelable)
 
             configureButton(dialog, builder, callback, dialog.buttons)
 
@@ -34,7 +36,20 @@ object RxDialogController {
                     emitter.onComplete()
                 }
             }
-            builder.show()
+            builder.show().also {
+
+                it.getButton(DialogInterface.BUTTON_POSITIVE).apply {
+                    val colorRes = dialog.positiveTextColor
+                    if (colorRes != DEFAULT_DIALOG_COLOR_RES)
+                        setTextColor(dialog.context.getColorByResId(colorRes))
+                }
+
+                it.getButton(DialogInterface.BUTTON_NEGATIVE).apply {
+                    val colorRes = dialog.negativeTextColor
+                    if (colorRes != DEFAULT_DIALOG_COLOR_RES)
+                        setTextColor(dialog.context.getColorByResId(colorRes))
+                }
+            }
         }
     }
 

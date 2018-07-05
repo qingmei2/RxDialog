@@ -11,33 +11,69 @@ Show your dialog at somewhere:
 
 ```Kotlin
 button.setOnClickListener {
-            RxDialog
-                    .build(this) {
-                        title = "I am title"
-                        message = "I am message"
-                        buttons = arrayOf(
-                                EventType.CALLBACK_TYPE_POSITIVE,
-                                EventType.CALLBACK_TYPE_NEGATIVE,
-                                EventType.CALLBACK_TYPE_DISMISS
-                        )
-                        positiveText = getString(R.string.static_dialog_button_ok)
-                        negativeText = getString(R.string.static_dialog_button_cancel)
-                    }
-                    .observable()
-                    .subscribe{ event ->
-                          when (event.button) {
-                              EventType.CALLBACK_TYPE_POSITIVE -> {
-                                  toast("我点击了确认按钮")
-                              }
-                              EventType.CALLBACK_TYPE_NEGATIVE -> {
-                                  toast("我点击了取消按钮")
-                              }
-                              EventType.CALLBACK_TYPE_DISMISS -> {
-                                  toast("监听到Dialog.dismiss")
-                              }
+         RxDialog
+                .build(this) {
+                    title = "I am title"
+                    message = "I am message"
+                    buttons = arrayOf(
+                            EventType.CALLBACK_TYPE_POSITIVE,
+                            EventType.CALLBACK_TYPE_NEGATIVE,
+                            EventType.CALLBACK_TYPE_DISMISS
+                    )
+                    positiveText = getString(R.string.static_dialog_button_ok)
+                    positiveTextColor = R.color.positive_color
+                    negativeText = getString(R.string.static_dialog_button_cancel)
+                    negativeTextColor = R.color.negative_color
+                    cancelable = false
+                }
+                .subscribe{ event ->
+                      when (event.button) {
+                          EventType.CALLBACK_TYPE_POSITIVE -> {
+                              toast("click the OK")
                           }
-                    }
+                          EventType.CALLBACK_TYPE_NEGATIVE -> {
+                              toast("click the CANCEL")
+                          }
+                          EventType.CALLBACK_TYPE_DISMISS -> {
+                              toast("dismiss...")
+                          }
+                      }
+                }
 }
+```
+
+in Java:
+
+```Java
+ RxDialog
+        .Companion
+        .build(this, builder -> {
+            builder.withTitle(R.string.static_dialog_title)
+                    .withMessage(R.string.static_dialog_message)
+                    .withButtons(new EventType[]{
+                            EventType.CALLBACK_TYPE_DISMISS,
+                            EventType.CALLBACK_TYPE_NEGATIVE,
+                            EventType.CALLBACK_TYPE_POSITIVE
+                    })
+                    .withNegativeText(R.string.static_dialog_button_cancel)
+                    .withNegativeTextColor(R.color.negative_color)
+                    .withPositiveTextColor(R.color.positive_color)
+                    .withPositiveText(R.string.static_dialog_button_ok);
+            return null;
+        })
+        .subscribe(event -> {
+               switch (event.getButton()) {
+                   case CALLBACK_TYPE_POSITIVE:
+                       toast("click the OK");
+                       break;
+                   case CALLBACK_TYPE_NEGATIVE:
+                       toast("click the CANCEL");
+                       break;
+                   case CALLBACK_TYPE_DISMISS:
+                       toast("dismiss...");
+                       break;
+               }
+        });
 ```
 
 ## Another author's libraries using RxJava:

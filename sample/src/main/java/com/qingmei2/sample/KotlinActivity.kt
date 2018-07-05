@@ -44,9 +44,11 @@ class KotlinActivity : AppCompatActivity() {
                                 EventType.CALLBACK_TYPE_DISMISS
                         )
                         positiveText = getString(R.string.static_dialog_button_ok)
+                        positiveTextColor = R.color.positive_color
                         negativeText = getString(R.string.static_dialog_button_cancel)
+                        negativeTextColor = R.color.negative_color
+                        cancelable = false
                     }
-                    .observable()
                     .subscribe(eventObserver)
         }
     }

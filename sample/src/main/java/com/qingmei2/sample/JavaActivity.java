@@ -42,16 +42,17 @@ public class JavaActivity extends AppCompatActivity {
                         .build(this, builder -> {
                             builder.withTitle(R.string.static_dialog_title)
                                     .withMessage(R.string.static_dialog_message)
-                                    .withButtons(new EventType[]
-                                            {EventType.CALLBACK_TYPE_DISMISS,
-                                                    EventType.CALLBACK_TYPE_NEGATIVE,
-                                                    EventType.CALLBACK_TYPE_POSITIVE
-                                            })
+                                    .withButtons(new EventType[]{
+                                            EventType.CALLBACK_TYPE_DISMISS,
+                                            EventType.CALLBACK_TYPE_NEGATIVE,
+                                            EventType.CALLBACK_TYPE_POSITIVE
+                                    })
                                     .withNegativeText(R.string.static_dialog_button_cancel)
+                                    .withNegativeTextColor(R.color.negative_color)
+                                    .withPositiveTextColor(R.color.positive_color)
                                     .withPositiveText(R.string.static_dialog_button_ok);
                             return null;
                         })
-                        .observable()
                         .subscribe(consumer)
         );
     }

@@ -1,6 +1,7 @@
 package com.qingmei2.rxdialog
 
 import android.content.Context
+import android.support.annotation.ColorRes
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
 import io.reactivex.Observable
@@ -9,16 +10,22 @@ class RxDialog private constructor(val context: Context,
                                    val title: String,
                                    val message: String,
                                    val positiveText: String,
+                                   @ColorRes val positiveTextColor: Int,
                                    val negativeText: String,
-                                   val buttons: Array<EventType>) {
+                                   @ColorRes val negativeTextColor: Int,
+                                   val buttons: Array<EventType>,
+                                   val cancelable: Boolean) {
 
     private constructor(builder: RxDialog.Builder) : this(
             builder.context,
             builder.title,
             builder.message,
             builder.positiveText,
+            builder.positiveTextColor,
             builder.negativeText,
-            builder.buttons
+            builder.negativeTextColor,
+            builder.buttons,
+            builder.cancelable
     )
 
     fun observable(): Observable<Event> {
@@ -27,12 +34,12 @@ class RxDialog private constructor(val context: Context,
 
     companion object {
 
-        fun build(context: Context, builder: Builder.() -> Unit) = Builder(context, builder).build()
+        fun build(context: Context, builder: Builder.() -> Unit) = Builder(context, builder).build().observable()
 
-        private const val DEFAULT_DIALOG_STRING_RES = -1
-        private const val DEFAULT_DIALOG_COLOR_RES = -2
-        private const val DEFAULT_DIALOG_CANCELABLE = true
-        private const val DEFAULT_DIALOG_STRING = ""
+        internal const val DEFAULT_DIALOG_STRING_RES = -1
+        internal const val DEFAULT_DIALOG_COLOR_RES = -2
+        internal const val DEFAULT_DIALOG_CANCELABLE = true
+        internal const val DEFAULT_DIALOG_STRING = ""
     }
 
     class Builder private constructor() {
@@ -43,34 +50,50 @@ class RxDialog private constructor(val context: Context,
         }
 
         lateinit var context: Context
+
         var title: String = DEFAULT_DIALOG_STRING
         var message: String = DEFAULT_DIALOG_STRING
         var positiveText: String = DEFAULT_DIALOG_STRING
         var negativeText: String = DEFAULT_DIALOG_STRING
+
+        @ColorRes
+        var positiveTextColor: Int = DEFAULT_DIALOG_COLOR_RES
+        @ColorRes
+        var negativeTextColor: Int = DEFAULT_DIALOG_COLOR_RES
+
         var buttons: Array<EventType> = arrayOf()
+        var cancelable: Boolean = DEFAULT_DIALOG_CANCELABLE
 
         fun withTitle(stringRes: Int) = apply {
-            title = parseStringRes(stringRes)
+            title = context.getStringByResId(stringRes)
         }
 
         fun withMessage(stringRes: Int) = apply {
-            message = parseStringRes(stringRes)
+            message = context.getStringByResId(stringRes)
         }
 
         fun withPositiveText(stringRes: Int) = apply {
-            positiveText = parseStringRes(stringRes)
+            positiveText = context.getStringByResId(stringRes)
         }
 
         fun withNegativeText(stringRes: Int) = apply {
-            negativeText = parseStringRes(stringRes)
+            negativeText = context.getStringByResId(stringRes)
+        }
+
+        fun withPositiveTextColor(@ColorRes colorRes: Int) = apply {
+            positiveTextColor = colorRes
+        }
+
+        fun withNegativeTextColor(@ColorRes colorRes: Int) = apply {
+            negativeTextColor = colorRes
         }
 
         fun withButtons(buttons: Array<EventType>) = apply {
             this.buttons = buttons
         }
 
-        private fun parseStringRes(stringRes: Int): String {
-            return context.getString(stringRes)
+        fun withCancelable(cancelable: Boolean) = apply {
+            this.cancelable = cancelable
         }
 
         fun build() = RxDialog(this)
