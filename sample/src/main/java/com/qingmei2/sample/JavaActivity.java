@@ -53,6 +53,7 @@ public class JavaActivity extends AppCompatActivity {
                                     .withPositiveText(R.string.static_dialog_button_ok);
                             return null;
                         })
+                        .observable()
                         .subscribe(consumer)
         );
     }

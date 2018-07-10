@@ -4,7 +4,8 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import com.qingmei2.rxdialog.entity.Event
 import com.qingmei2.rxdialog.entity.EventType
-import io.reactivex.Observable
+import io.reactivex.*
+import io.reactivex.internal.operators.completable.CompletableEmpty
 
 class RxDialog private constructor(val context: Context,
                                    val title: String,
@@ -32,9 +33,27 @@ class RxDialog private constructor(val context: Context,
         return RxDialogController.observable(this)
     }
 
+    fun single(): Single<Event> {
+        return observable().singleOrError()
+    }
+
+    fun flowable(strategy: BackpressureStrategy = BackpressureStrategy.BUFFER): Flowable<Event> {
+        return observable().toFlowable(strategy)
+    }
+
+    fun maybe(): Maybe<Event> {
+        return single().toMaybe()
+    }
+
+    fun completable(): Completable {
+        return observable().flatMapCompletable {
+            CompletableEmpty.INSTANCE
+        }
+    }
+
     companion object {
 
-        fun build(context: Context, builder: Builder.() -> Unit) = Builder(context, builder).build().observable()
+        fun build(context: Context, builder: Builder.() -> Unit) = Builder(context, builder).build()
 
         internal const val DEFAULT_DIALOG_STRING_RES = -1
         internal const val DEFAULT_DIALOG_COLOR_RES = -2

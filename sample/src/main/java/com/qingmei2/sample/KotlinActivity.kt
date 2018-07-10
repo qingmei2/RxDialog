@@ -49,6 +49,7 @@ class KotlinActivity : AppCompatActivity() {
                         negativeTextColor = R.color.negative_color
                         cancelable = false
                     }
+                    .observable()
                     .subscribe(eventObserver)
         }
     }
