@@ -1,6 +1,6 @@
 package com.qingmei2.rxdialog.entity
 
-enum class EventType {
+enum class SystemEvent {
 
     /**
      * Dismiss事件

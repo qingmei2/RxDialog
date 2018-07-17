@@ -3,18 +3,19 @@ package com.qingmei2.sample;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.qingmei2.rxdialog.RxDialog;
-import com.qingmei2.rxdialog.entity.Event;
-import com.qingmei2.rxdialog.entity.EventType;
+import com.qingmei2.rxdialog.entity.RxEvent;
+import com.qingmei2.rxdialog.entity.SystemEvent;
+import com.qingmei2.rxdialog.core.SystemDialog;
 
 import io.reactivex.functions.Consumer;
 
 public class JavaActivity extends AppCompatActivity {
 
-    private Consumer<Event> consumer = event -> {
+    private Consumer<RxEvent<SystemEvent>> consumer = event -> {
         switch (event.getButton()) {
             case CALLBACK_TYPE_POSITIVE:
                 toast("click the OK");
@@ -37,23 +38,24 @@ public class JavaActivity extends AppCompatActivity {
         FloatingActionButton fabSimple = findViewById(R.id.btnSimple);
 
         fabSimple.setOnClickListener(v ->
-                RxDialog
+                SystemDialog
                         .Companion
-                        .build(this, builder -> {
-                            builder.withTitle(R.string.static_dialog_title)
-                                    .withMessage(R.string.static_dialog_message)
-                                    .withButtons(new EventType[]{
-                                            EventType.CALLBACK_TYPE_DISMISS,
-                                            EventType.CALLBACK_TYPE_NEGATIVE,
-                                            EventType.CALLBACK_TYPE_POSITIVE
+                        .build(builder -> {
+                            builder.withTitle(() -> "I am title")
+                                    .withMessage(() -> "I am message")
+                                    .withButtons(new SystemEvent[]{
+                                            SystemEvent.CALLBACK_TYPE_DISMISS,
+                                            SystemEvent.CALLBACK_TYPE_NEGATIVE,
+                                            SystemEvent.CALLBACK_TYPE_POSITIVE
                                     })
-                                    .withNegativeText(R.string.static_dialog_button_cancel)
-                                    .withNegativeTextColor(R.color.negative_color)
-                                    .withPositiveTextColor(R.color.positive_color)
-                                    .withPositiveText(R.string.static_dialog_button_ok);
+                                    .withNegativeText(() -> "CANCEL")
+                                    .withNegativeTextColor(() -> ContextCompat.getColor(this, R.color.negative_color))
+                                    .withPositiveTextColor(() -> ContextCompat.getColor(this, R.color.positive_color))
+                                    .withPositiveText(() -> getString(R.string.static_dialog_button_ok));
                             return null;
                         })
-                        .observable()
+                        .create()
+                        .showDialog(this)
                         .subscribe(consumer)
         );
     }
