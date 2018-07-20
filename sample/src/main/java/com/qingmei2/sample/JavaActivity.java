@@ -39,19 +39,19 @@ public class JavaActivity extends AppCompatActivity {
 
         fabSimple.setOnClickListener(v ->
                 SystemDialog
-                        .Companion
+                        .Builder
                         .build(builder -> {
-                            builder.withTitle(() -> "I am title")
-                                    .withMessage(() -> "I am message")
+                            builder.withTitle("I am title")
+                                    .withMessage("I am message")
                                     .withButtons(new SystemEvent[]{
                                             SystemEvent.CALLBACK_TYPE_DISMISS,
                                             SystemEvent.CALLBACK_TYPE_NEGATIVE,
                                             SystemEvent.CALLBACK_TYPE_POSITIVE
                                     })
-                                    .withNegativeText(() -> "CANCEL")
-                                    .withNegativeTextColor(() -> ContextCompat.getColor(this, R.color.negative_color))
-                                    .withPositiveTextColor(() -> ContextCompat.getColor(this, R.color.positive_color))
-                                    .withPositiveText(() -> getString(R.string.static_dialog_button_ok));
+                                    .withNegativeText("CANCEL")
+                                    .withNegativeTextColor(ContextCompat.getColor(this, R.color.negative_color))
+                                    .withPositiveTextColor(ContextCompat.getColor(this, R.color.positive_color))
+                                    .withPositiveText(getString(R.string.static_dialog_button_ok));
                             return null;
                         })
                         .create()

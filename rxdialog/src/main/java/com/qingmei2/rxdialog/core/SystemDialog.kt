@@ -13,16 +13,16 @@ import com.qingmei2.rxdialog.getColorByResId
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class SystemDialog private constructor(private val title: Suppiler<String>,
-                                       private val message: Suppiler<String>,
-                                       private val positiveText: Suppiler<String>,
-                                       private val negativeText: Suppiler<String>,
-                                       private val positiveTextColor: Suppiler<Int>,
-                                       private val negativeTextColor: Suppiler<Int>,
+class SystemDialog private constructor(private val title: Supplier<String>,
+                                       private val message: Supplier<String>,
+                                       private val positiveText: Supplier<String>,
+                                       private val negativeText: Supplier<String>,
+                                       private val positiveTextColor: Supplier<Int>,
+                                       private val negativeTextColor: Supplier<Int>,
                                        private val buttons: Array<SystemEvent>,
                                        private val cancelable: Boolean) : RxDialog<SystemEvent> {
 
-    private constructor(builder: SystemDialog.Builder) : this(
+    private constructor(builder: SystemDialog.InnerBuilder) : this(
             builder.title,
             builder.message,
             builder.positiveText,
@@ -96,62 +96,74 @@ class SystemDialog private constructor(private val title: Suppiler<String>,
         }
     }
 
-    companion object {
+    companion object Builder {
 
-        fun build(suppiler: Builder.() -> Unit): Builder = Builder(suppiler).build()
+        fun build(suppiler: InnerBuilder.() -> Unit): InnerBuilder = InnerBuilder(suppiler).build()
 
         internal const val DEFAULT_DIALOG_COLOR = -1
         internal const val DEFAULT_DIALOG_CANCELABLE = true
         internal const val DEFAULT_DIALOG_STRING = ""
     }
 
-    class Builder private constructor() : RxDialog.Factory<SystemEvent> {
+    class InnerBuilder private constructor() : RxDialog.Factory<SystemEvent> {
 
         override fun create(): SystemDialog {
             return SystemDialog(this)
         }
 
-        constructor(builder: Builder.() -> Unit) : this() {
+        constructor(builder: InnerBuilder.() -> Unit) : this() {
             builder()
         }
 
         @StringRes
-        var title: Suppiler<String> = { DEFAULT_DIALOG_STRING }
+        var title: Supplier<String> = { DEFAULT_DIALOG_STRING }
         @StringRes
-        var message: Suppiler<String> = { DEFAULT_DIALOG_STRING }
+        var message: Supplier<String> = { DEFAULT_DIALOG_STRING }
         @StringRes
-        var positiveText: Suppiler<String> = { DEFAULT_DIALOG_STRING }
+        var positiveText: Supplier<String> = { DEFAULT_DIALOG_STRING }
         @StringRes
-        var negativeText: Suppiler<String> = { DEFAULT_DIALOG_STRING }
+        var negativeText: Supplier<String> = { DEFAULT_DIALOG_STRING }
         @ColorRes
-        var positiveTextColor: Suppiler<Int> = { DEFAULT_DIALOG_COLOR }
+        var positiveTextColor: Supplier<Int> = { DEFAULT_DIALOG_COLOR }
         @ColorRes
-        var negativeTextColor: Suppiler<Int> = { DEFAULT_DIALOG_COLOR }
+        var negativeTextColor: Supplier<Int> = { DEFAULT_DIALOG_COLOR }
 
         var buttons: Array<SystemEvent> = arrayOf()
         var cancelable: Boolean = DEFAULT_DIALOG_CANCELABLE
 
-        fun withTitle(suppiler: Suppiler<String>) = apply {
+        fun withTitle(title: String) = withTitle { title }
+
+        fun withTitle(suppiler: Supplier<String>) = apply {
             title = suppiler
         }
 
-        fun withMessage(suppiler: Suppiler<String>) = apply {
+        fun withMessage(message: String) = withMessage { message }
+
+        fun withMessage(suppiler: Supplier<String>) = apply {
             message = suppiler
         }
 
-        fun withPositiveText(suppiler: Suppiler<String>) = apply {
+        fun withPositiveText(positiveText: String) = withPositiveText { positiveText }
+
+        fun withPositiveText(suppiler: Supplier<String>) = apply {
             positiveText = suppiler
         }
 
-        fun withNegativeText(suppiler: Suppiler<String>) = apply {
+        fun withNegativeText(negativeText: String) = withNegativeText { negativeText }
+
+        fun withNegativeText(suppiler: Supplier<String>) = apply {
             negativeText = suppiler
         }
 
-        fun withPositiveTextColor(suppiler: Suppiler<Int>) = apply {
+        fun withPositiveTextColor(color: Int) = withPositiveTextColor { color }
+
+        fun withPositiveTextColor(suppiler: Supplier<Int>) = apply {
             positiveTextColor = suppiler
         }
 
-        fun withNegativeTextColor(suppiler: Suppiler<Int>) = apply {
+        fun withNegativeTextColor(color: Int) = withNegativeTextColor { color }
+
+        fun withNegativeTextColor(suppiler: Supplier<Int>) = apply {
             negativeTextColor = suppiler
         }
 
@@ -167,4 +179,4 @@ class SystemDialog private constructor(private val title: Suppiler<String>,
     }
 }
 
-typealias Suppiler<T> = () -> T
+typealias Supplier<T> = () -> T
