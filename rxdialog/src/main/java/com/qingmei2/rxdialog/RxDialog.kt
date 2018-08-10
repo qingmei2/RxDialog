@@ -11,6 +11,6 @@ interface RxDialog<T> {
     interface Factory<T> {
 
         fun create(): RxDialog<T>
-
+        
     }
 }

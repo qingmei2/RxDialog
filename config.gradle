@@ -1,9 +1,9 @@
 def retrofit_version = '2.3.0'
 def okhttp_version = '3.9.0'
 def dagger_version = '2.14.1'
-def kotlin_version = '1.2.50'
+def kotlin_version = '1.2.60'
 def support_version = '27.1.0'
-def espresso_version = '2.2.2'
+def espresso_version = '3.0.2'
 def glide_version = '4.6.0'
 def routerVersion = "1.2.4"
 def routerCompilerVersion = "1.1.4"
@@ -38,7 +38,7 @@ project.ext {
             "rxJava2"                      : "io.reactivex.rxjava2:rxjava:2.1.14",
             "rxandroid"                    : "io.reactivex.rxjava2:rxandroid:2.0.2",
             "rxbinding"                    : "com.jakewharton.rxbinding2:rxbinding:2.0.0",
-            "rximagepicker"                : "com.github.qingmei2:rximagepicker:0.4.0",
+            "rximagepicker"                : "com.github.qingmei2:rximagepicker:2.2.0-alpha",
             "rxschedulers"                 : "com.github.qingmei2.rxschedulers:rxschedulers:${rxschedulers_version}",
             "rxschedulers_kt"              : "com.github.qingmei2.rxschedulers:rxschedulers_support_kt:${rxschedulers_version}",
             "rxpermissions"                : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
