@@ -8,9 +8,4 @@ interface RxDialog<T> {
 
     fun showDialog(context: Context): Observable<RxEvent<T>>
 
-    interface Factory<T> {
-
-        fun create(): RxDialog<T>
-        
-    }
 }

@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.qingmei2.rxdialog.entity.RxEvent;
 import com.qingmei2.rxdialog.entity.SystemEvent;
-import com.qingmei2.rxdialog.core.SystemDialog;
+import com.qingmei2.rxdialog.core.RxAlertDialog;
 
 import io.reactivex.functions.Consumer;
 
@@ -38,7 +38,7 @@ public class JavaActivity extends AppCompatActivity {
         FloatingActionButton fabSimple = findViewById(R.id.btnSimple);
 
         fabSimple.setOnClickListener(v ->
-                SystemDialog
+                RxAlertDialog
                         .Builder
                         .build(builder -> {
                             builder.withTitle("I am title")

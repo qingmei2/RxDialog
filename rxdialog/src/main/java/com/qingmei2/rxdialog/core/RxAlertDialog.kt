@@ -9,20 +9,20 @@ import android.support.annotation.StringRes
 import com.qingmei2.rxdialog.RxDialog
 import com.qingmei2.rxdialog.entity.RxEvent
 import com.qingmei2.rxdialog.entity.SystemEvent
-import com.qingmei2.rxdialog.getColorByResId
+import com.qingmei2.rxdialog.ext.getColorByResId
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class SystemDialog private constructor(private val title: Supplier<String>,
-                                       private val message: Supplier<String>,
-                                       private val positiveText: Supplier<String>,
-                                       private val negativeText: Supplier<String>,
-                                       private val positiveTextColor: Supplier<Int>,
-                                       private val negativeTextColor: Supplier<Int>,
-                                       private val buttons: Array<SystemEvent>,
-                                       private val cancelable: Boolean) : RxDialog<SystemEvent> {
+class RxAlertDialog private constructor(private val title: Supplier<String>,
+                                        private val message: Supplier<String>,
+                                        private val positiveText: Supplier<String>,
+                                        private val negativeText: Supplier<String>,
+                                        private val positiveTextColor: Supplier<Int>,
+                                        private val negativeTextColor: Supplier<Int>,
+                                        private val buttons: Array<SystemEvent>,
+                                        private val cancelable: Boolean) : RxDialog<SystemEvent> {
 
-    private constructor(builder: SystemDialog.InnerBuilder) : this(
+    private constructor(builder: RxAlertDialog.InnerBuilder) : this(
             builder.title,
             builder.message,
             builder.positiveText,
@@ -107,8 +107,8 @@ class SystemDialog private constructor(private val title: Supplier<String>,
 
     class InnerBuilder private constructor() : RxDialog.Factory<SystemEvent> {
 
-        override fun create(): SystemDialog {
-            return SystemDialog(this)
+        override fun create(): RxAlertDialog {
+            return RxAlertDialog(this)
         }
 
         constructor(builder: InnerBuilder.() -> Unit) : this() {

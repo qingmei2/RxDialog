@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.qingmei2.rxdialog.core.RxDialogProvider
 import com.qingmei2.rxdialog.entity.RxEvent
 import com.qingmei2.rxdialog.entity.SystemEvent
-import com.qingmei2.rxdialog.core.SystemDialog
+import com.qingmei2.rxdialog.core.RxAlertDialog
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.activity_kt.*
 
@@ -36,7 +35,7 @@ class KotlinActivity : AppCompatActivity() {
             startActivity(Intent(this, JavaActivity::class.java))
         }
         btnSimple.setOnClickListener {
-            SystemDialog
+            RxAlertDialog
                     .build {
                         title = { "I am title" }
                         message = { "I am message" }
